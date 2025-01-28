@@ -1,7 +1,8 @@
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/512px-YouTube_full-color_icon_%282017%29.svg.png" alt="" align="center" width="225" height="150"><h1 align="center">3D Spatial Mapping using RTAB SLAM for sparse featured environments</h1>
+<img src="http://official-rtab-map-forum.206.s1.nabble.com/file/n1/RTAB-Map.png" alt="" align="center" width="225" height="150"><h1 align="center">3D Spatial Mapping using RTAB SLAM for sparse featured environments</h1>
 <p align="center"><a href="#project-description">Project Description</a> - <a href="#key-features">Key Features</a> - <a href="#technology-stack">Tech Stack</a></p>
 
-<img src="https://repolaunch.vercel.app/assets/img/yt.webp" alt="" align="center" width="auto" height="auto">
+
+<img src= "https://github.com/shrirag10/3D-Mapping-RTAB-SLAM/blob/main/rtab_ws/1.png?raw=true" alt="" align="center" width="auto" height="auto">
 
 ## Project Description
 
