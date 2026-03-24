@@ -1,65 +1,72 @@
-<img src="http://official-rtab-map-forum.206.s1.nabble.com/file/n1/RTAB-Map.png" alt="" align="center" width="225" height="150"><h1 align="center">3D Spatial Mapping using RTAB SLAM for sparse featured environments</h1>
-<p align="center"><a href="#project-description">Project Description</a> - <a href="#key-features">Key Features</a> - <a href="#technology-stack">Tech Stack</a></p>
+# 3D Mapping with RTAB-Map SLAM
 
+RTABMap-based 3D spatial mapping in sparse-featured environments — specifically tested in Northeastern University's underground tunnel system, where traditional feature-matching SLAM struggles. Built on ROS 2 Humble with real-time RViz2 visualization.
 
-<img src= "https://github.com/shrirag10/3D-Mapping-RTAB-SLAM/blob/main/rtab_ws/1.png?raw=true" alt="" align="center" width="auto" height="auto">
+## Motivation
 
-## Project Description
-
-Mapping indoor environments can often be challenging, especially in areas with sparse features like long tunnels. However, with the power of RTAB-Map (Real-Time Appearance-Based Mapping), we aimed to create precise 3D maps of such spaces—offering a practical, semi-automated solution for tasks that traditionally relied on manual labor or costly professional services.
-
-This project was conducted in Northeastern University's tunnel system, a complex environment with minimal distinct visual features. Despite these challenges, the RTAB-Map framework successfully generated highly accurate maps, proving its capability even in difficult conditions.
-
-**Why This Project?**
-
-Have you ever needed to calculate how much paint or wallpaper a space needs and struggled with guesswork? High-quality materials can be expensive, and overbuying or underestimating can lead to wasted time and money. With indoor 3D mapping, we bridge this gap, offering:
-
-Accurate space measurements. Real-time visual feedback for map creation. Minimal need for professional intervention.
-
-## Key Features
-
-**Robust SLAM Framework**
-
-*   Utilizes RTAB-Map’s graph-based SLAM for highly accurate real-time mapping.
-*   Implements advanced loop closure techniques to minimize drift and improve map quality
-
-**Functionality in Sparse Environments**
-
-*   Designed to work effectively in feature-sparse environments like tunnels or long corridors, where traditional mapping methods often fail.
-*   Incorporates Bayesian approaches and feature-based matching for superior loop detection in low-feature scenarios.
-
-**Real-Time Visualization**
-
-*   Seamlessly integrates with RViz2 for on-the-fly visualization of mapping progress, allowing immediate feedback on data collection.
-
-**Versatile Hardware Compatibility**
-
-*   Compatible with RGB-D sensors like Stereo Labs ZED Mini and Intel RealSense.
-*   Supports IMU and laser-based systems for increased flexibility in sensor setups.
-
-**Optimized Mapping Output**
-
-*   Produces 2D and 3D maps with graph optimization techniques (G2O, GTSAM, TORO).
-*   Easily exportable and storable map data for future reference or comparison with ground truth.
-
-**Stabilized Operation**
-
-*   Innovatively tested with stabilized mounts (e.g., rolling chairs or desks) for smoother and more reliable data acquisition.
-*   Adaptable to both handheld and mounted operation based on environmental conditions.
-
-**User-Friendly and Modular**
-
-*   Built on ROS 2 Humble for modularity and scalability, making it accessible to robotics enthusiasts and professionals alike.
-*   Open-source and easy to customize for diverse applications.
+Standard visual SLAM relies on rich texture and distinctive features. Tunnels and corridors with uniform surfaces cause feature-matching failures and loop closure drift. This project evaluates RTAB-Map's graph-based approach in exactly these conditions.
 
 ## Tech Stack
 
-**Hardware:** Stereo Labs ZED Mini Camera, Acer Nitro Laptop, Intel RealSense D435i (optional)
+- **SLAM**: RTAB-Map 0.21.9 (graph-based, appearance-based loop closure)
+- **ROS**: ROS 2 Humble
+- **Sensors**: Stereo Labs ZED Mini, Intel RealSense D435i (RGB-D / stereo)
+- **Optimization**: G2O, GTSAM, TORO
+- **Visualization**: RViz2, rqt_graph
+- **Data recording**: ROSbag
 
-**Software:** ROS 2 Humble, RTAB-Map SDK, ZED SDK, CUDA Toolkit, RViz2
+## Key Capabilities
 
-**Graph Optimization:** G2O, GTSAM, TORO
+- Real-time 3D map building with loop closure detection
+- 2D and 3D map export
+- Multi-sensor support (stereo, RGB-D, lidar)
+- Handheld and stationary deployment modes
 
-**Visualization**: RViz2, rqt\_graph
+## Workspace Structure
 
-**Other**: ROSbag for data storage, loop closure algorithms
+```
+rtab_ws/
+└── build/
+    └── rtabmap/
+        └── bin/
+            ├── rtabmap                    # Main SLAM node
+            ├── rtabmap-rgbd_mapping       # RGB-D mapping
+            ├── rtabmap-lidar_mapping      # LiDAR mapping
+            └── rtabmap-databaseViewer     # Map inspection
+```
+
+## Setup
+
+```bash
+# Install ROS 2 Humble and RTAB-Map
+sudo apt install ros-humble-rtabmap-ros
+
+# Clone and build
+git clone https://github.com/shrirag10/3D-Mapping-RTAB-SLAM.git
+cd 3D-Mapping-RTAB-SLAM/rtab_ws
+colcon build
+source install/setup.bash
+```
+
+## Usage
+
+```bash
+# RGB-D mapping (RealSense D435i)
+ros2 launch rtabmap_ros rtabmap.launch.py
+
+# Record a mapping session
+ros2 bag record -o tunnel_map /camera/depth/image_raw /camera/color/image_raw /tf
+
+# Visualize map database
+rtabmap-databaseViewer ~/.ros/rtabmap.db
+```
+
+## Notes
+
+- RTAB-Map's appearance-based loop closure (bag-of-words) is more robust than geometric-only methods in texture-poor environments
+- G2O post-optimization recommended for final map export
+- Mounting stability significantly affects map quality
+
+## License
+
+MIT
